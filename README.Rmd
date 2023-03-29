@@ -24,8 +24,8 @@ The goal of webber is to ...
 
 You can install the development version of webber like so:
 
-``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+```{r}
+# devtools::install_github("KaiAragaki/webber")
 ```
 
 ## Example
