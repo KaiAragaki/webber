@@ -1,10 +1,11 @@
 Package: webber
-Title: What the Package Does (One Line, Title Case)
+Title: Wrangle and Annotate Blots Semi-Automatically
 Version: 0.0.0.9001
 Authors@R: 
     person("Kai", "Aragaki", , "adamaragaki@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-9458-0426"))
-Description: What the package does (one paragraph).
+Description: Webber helps you download, convert, upload, edit, and annotate Western blot images. 
+By enforcing a documentation format for Western blots, annotation can be rigorous and automatic.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en
