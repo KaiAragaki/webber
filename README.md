@@ -21,3 +21,8 @@ You can install the development version of webber like so:
 ``` r
 # devtools::install_github("KaiAragaki/webber")
 ```
+
+## TODO
+
+- [ ] Create an assistant to help set up environmental variables
+  (WEBBER_WBPATH, WEBBER_USER)
