@@ -4,17 +4,21 @@
 #' the specified location, no downloading will occur unless `overwrite = TRUE`.
 #' Will return the local path to the file.
 #'
-#' This is a thin wrapper around `bladdr::get_gbci_file`, and has
-#' hard-coded paths - so it's more a quality-of-life function.
+#' This is a thin wrapper around `bladdr::get_gbci_file`, and has hard-coded
+#' paths - so it's more a quality-of-life function.
 #'
-#' @param path Character. The path to the image, sans `wb_path`
-#' @param dest_dir Character. The path to save the image.
-#' @param overwrite Logical. Should to file be overwritten if it already exists?
-#' @param user Whose folder should this file be pulled from?
-#' @param wb_path Character. Path to the top level directory that contains all western blots.
-#' @param quiet Should this function not message upon finding existing files?
+#' @param path Character. The path to the image/directory, sans `wb_path`.
+#' @param dest_dir Character. The path to save the image/directory. If it
+#'   doesn't have an extension, it's assumed you mean a folder, and that folder
+#'   already exists.
+#' @param overwrite Logical. Should files be overwritten if they already exist?
+#' @param user Character. Whose folder this file should be pulled from.
+#' @param wb_path Character. Path to the top level directory that contains all
+#'   western blots.
+#' @param quiet Logical. Should this function not message upon finding existing
+#'   files?
 #'
-#' @return Character. The local path to the file.
+#' @return Character. The local path to the file or directory.
 #' @export
 #'
 #' @examples
@@ -35,7 +39,15 @@ wb_get <- function(path,
   check_if_user_is_empty(user)
   check_if_wb_path_is_empty(wb_path)
 
-  dest_path <- fs::path(dest_dir, path)
+  if (fs::path_ext(dest_dir) == "") {
+    if (fs::path_ext(path) != "") {
+      dest_path <- fs::path(dest_dir, fs::path_file(path))
+    } else {
+      dest_path <- dest_dir
+    }
+  } else {
+    dest_path <- fs::path(dest_dir, path)
+  }
 
   if (file.exists(dest_path) & !overwrite) {
     if (!quiet) {
@@ -48,7 +60,7 @@ wb_get <- function(path,
   fs::dir_create(no_file)
 
   e <- try(
-    bladdr::get_gbci_file(
+    bladdr::get_gbci(
       fs::path(wb_path, user, path),
       dest = dest_path,
       overwrite = overwrite),
@@ -59,7 +71,6 @@ wb_get <- function(path,
 
   if (length(e_class) > 0) {
     if (e_class[1] == "http_404") {
-      # TODO: Actually add wb_list
       cli::cli_abort(c(e[1], i = "`wb_list(path)` can help find available blots within a given directory"))
     }
     cli::cli_abort(e)
