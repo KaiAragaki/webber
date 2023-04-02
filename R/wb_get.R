@@ -8,7 +8,7 @@
 #' paths - so it's more a quality-of-life function.
 #'
 #' @param path Character. The path to the image/directory, sans `wb_path`.
-#' @param dest_dir Character. The path to save the image/directory. If it
+#' @param dest Character. The path to save the image/directory. If it
 #'   doesn't have an extension, it's assumed you mean a folder, and that folder
 #'   already exists.
 #' @param overwrite Logical. Should files be overwritten if they already exist?
@@ -31,7 +31,7 @@
 #' )
 #' }
 wb_get <- function(path,
-                   dest_dir,
+                   dest,
                    overwrite = FALSE,
                    user = Sys.getenv("WEBBER_USR"),
                    wb_path = Sys.getenv("WEBBER_WBPATH"),
@@ -39,30 +39,31 @@ wb_get <- function(path,
   check_if_user_is_empty(user)
   check_if_wb_path_is_empty(wb_path)
 
-  if (fs::path_ext(dest_dir) == "") {
-    if (fs::path_ext(path) != "") {
-      dest_path <- fs::path(dest_dir, fs::path_file(path))
-    } else {
-      dest_path <- dest_dir
-    }
-  } else {
-    dest_path <- fs::path(dest_dir, path)
+  could_be_dir <- function(path) {
+    fs::path_ext(path) == ""
   }
 
-  if (file.exists(dest_path) & !overwrite) {
+  if (could_be_dir(dest)) {
+    dest <- fs::path(dest)
+  }
+
+  if (file.exists(dest) & !could_be_dir(dest) & !overwrite) {
     if (!quiet) {
-      cli::cli_inform("{dest_path} exists and overwrite = FALSE, returning local path to file")
+      cli::cli_inform("{dest} exists and overwrite = FALSE, returning local path to file")
     }
-    return(dest_path)
+    return(dest)
   }
 
-  no_file <- stringr::str_remove(dest_path, "[^/]*$")
-  fs::dir_create(no_file)
+  if (!could_be_dir(dest)) {
+    no_file <- stringr::str_remove(dest, "[^/]*$")
+    fs::dir_create(no_file)
+  }
+
 
   e <- try(
     bladdr::get_gbci(
       fs::path(wb_path, user, path),
-      dest = dest_path,
+      dest = dest,
       overwrite = overwrite),
     silent = TRUE
   )
@@ -75,6 +76,6 @@ wb_get <- function(path,
     }
     cli::cli_abort(e)
   }
-  dest_path
+  dest
 }
 

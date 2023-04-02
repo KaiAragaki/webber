@@ -14,20 +14,24 @@ wb_get(
 )
 }
 \arguments{
-\item{path}{Character. The path to the image, sans \code{wb_path}}
+\item{path}{Character. The path to the image/directory, sans \code{wb_path}.}
 
-\item{dest_dir}{Character. The path to save the image.}
+\item{dest_dir}{Character. The path to save the image/directory. If it
+doesn't have an extension, it's assumed you mean a folder, and that folder
+already exists.}
 
-\item{overwrite}{Logical. Should to file be overwritten if it already exists?}
+\item{overwrite}{Logical. Should files be overwritten if they already exist?}
 
-\item{user}{Whose folder should this file be pulled from?}
+\item{user}{Character. Whose folder this file should be pulled from.}
 
-\item{wb_path}{Character. Path to the top level directory that contains all western blots.}
+\item{wb_path}{Character. Path to the top level directory that contains all
+western blots.}
 
-\item{quiet}{Should this function not message upon finding existing files?}
+\item{quiet}{Logical. Should this function not message upon finding existing
+files?}
 }
 \value{
-Character. The local path to the file.
+Character. The local path to the file or directory.
 }
 \description{
 Downloads a Western blot image and returns its path. If it already exists in
@@ -35,8 +39,8 @@ the specified location, no downloading will occur unless \code{overwrite = TRUE}
 Will return the local path to the file.
 }
 \details{
-This is a thin wrapper around \code{bladdr::get_gbci_file}, and has
-hard-coded paths - so it's more a quality-of-life function.
+This is a thin wrapper around \code{bladdr::get_gbci_file}, and has hard-coded
+paths - so it's more a quality-of-life function.
 }
 \examples{
 \dontrun{
