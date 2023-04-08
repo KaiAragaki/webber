@@ -6,7 +6,7 @@
 \usage{
 wb_get(
   path,
-  dest_dir,
+  dest,
   overwrite = FALSE,
   user = Sys.getenv("WEBBER_USR"),
   wb_path = Sys.getenv("WEBBER_WBPATH"),
@@ -16,7 +16,7 @@ wb_get(
 \arguments{
 \item{path}{Character. The path to the image/directory, sans \code{wb_path}.}
 
-\item{dest_dir}{Character. The path to save the image/directory. If it
+\item{dest}{Character. The path to save the image/directory. If it
 doesn't have an extension, it's assumed you mean a folder, and that folder
 already exists.}
 

@@ -24,6 +24,9 @@ wb_put(
 \item{drive}{An optional \code{ms_drive} object. If none supplied, will make one
 automatically.}
 }
+\value{
+Character. Path to the file on Sharepoint.
+}
 \description{
 This is a thin wrapper around the \code{upload_file} function from
 \code{Microsoft365R}, it just has defaults and safeguards tailored to uploading
@@ -32,4 +35,16 @@ overwrite without prompting.
 }
 \details{
 The uploaded file location is produced via \code{fs::path(wb_edit_path, user, dest_path)}
+}
+\examples{
+\dontrun{
+wb <- wb_get(
+"2022-06-22/h3.tif",
+tempdir(),
+user = "aragaki-kai",
+wb_path = "Raw Data/licor"
+)
+
+wb |>
+}
 }
