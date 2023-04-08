@@ -1,0 +1,152 @@
+---
+title: "Using Webber"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using Webber}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+This package is a utility belt for working with Western blot images in R. It's primarily focused on making annotation easier. 
+
+
+```{r setup}
+library(webber)
+```
+
+# Getting set up with webber
+
+You need to introduce yourself to webber so that you can more easily pull files from Sharepoint. Fortunately, that's rather simple: just run `wb_setup()`. 
+It'll tell you to paste a few lines into your .Rprofile (which it will handily open up for you), and you'll need to add your folder name (which should just be `lastname-firstname`). After you restart R, you should be ready to go (provided you've [introduced yourself to Sharepoint](https://kai.quarto.pub/bok/analysis_setup.html#getting-r-to-talk-to-sharepoint))
+
+# Looking through files
+
+Most of the time I don't really know the exact path of the file I'm looking for. webber makes this easy with `wb_list`:
+
+```{r eval=FALSE}
+wb_list("/") |> head()
+```
+
+```{r echo=FALSE}
+webber:::wb_list_head_example
+```
+
+Notice how I didn't have to specify my name - that's because of the introduction that we did earlier. If I wanted to root around in someone else's folder, I could do this:
+
+```{r eval=FALSE}
+wb_list("/", user = "arbuiso-alyssa")
+```
+
+```{r echo=FALSE}
+webber:::wb_list_other_user
+```
+
+If you want to drill deeper into a folder, you can do this:
+
+```{r eval=FALSE}
+wb_list("/2022-04-20_bupa-dr")
+```
+
+```{r echo=FALSE}
+webber:::wb_list_drill_down
+```
+
+# Getting
+
+When you've found your file or folder of interest, you download it with `wb_get`. I'm going to download a single file, but you can do this with whole folders:
+
+```{r eval = FALSE}
+file <- wb_get(
+  path = "2022-04-20_bupa-dr/pakt-s473-actin.tif",
+  dest = tempfile(),
+  overwrite = TRUE
+)
+```
+
+# Editing
+
+With our file in hand, we can now edit it. For this, we call upon the delightful `magick` R package, which uses `imagemagick` under the hood.
+
+```{r eval=FALSE}
+library(magick)
+image <- image_read(file)
+image
+```
+
+```{r echo=FALSE}
+library(magick)
+image <- system.file("extdata/wb.tif", package = "webber") |> image_read()
+image
+```
+
+The first part - the hardest part - is cropping it down to size. 
+
+`imagemagick` (henceforth `magick`) specifies that the TOP LEFT corner is (0, 0). So if I do this:
+
+```{r}
+image_crop(image, "100x300")
+```
+
+I get the upper left hand portion.
+
+If I wanted to offset where the area was (I still want it to be 100x300, say, but I want it closer to the bottom) I can specify an offset:
+
+```{r}
+image_crop(image, "100x300+0+100")
+```
+
+And if I want it closer to the middle:
+
+```{r}
+image_crop(image, "100x300+100+0")
+```
+
+So how do you make sure you crop the right portion? Unfortunately I don't have a perfect answer for you. You can do trial and error, or you can bring it into a photo editor and measure the dimensions and coordinates of your crop there. The things we do for reproducibility.
+
+```{r}
+cropped <- image_crop(image, "370x100+90+200")
+cropped
+```
+
+Now it just so happens that this dose response is backward - higher concentrations on the left, lower on the right. I prefer it the other way.
+
+```{r}
+flopped <- image_flop(cropped)
+flopped
+```
+
+Great - we're ready to annotate!
+
+# Annotating
+
+Now, back to webber.
+
+To annotate blot lanes with webber, you need to construct a `tibble` with one row per lane, and one column per line of annotation.
+
+```{r}
+library(tibble)
+# Why a tibble and not a regular data.frame?
+# tibbles preserve spaces in their column names, which makes them display nicer.
+annot <- 
+  tibble(
+    "Cell line" = "UC6",
+    "Buparlisib (nM)" = c("DMSO", "1", "10", "100", "1000", "10000")
+  )
+annot
+```
+
+Then supply the `tibble` to `wb_annot_lanes`:
+
+```{r}
+wb_annot_lanes(flopped, annot, n_lanes = 6, text_size = 4)
+```
+
