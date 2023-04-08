@@ -1,6 +1,6 @@
 Package: webber
 Title: Wrangle and Annotate Blots Semi-Automatically
-Version: 0.0.0.9004
+Version: 0.1.0
 Authors@R: 
     person("Kai", "Aragaki", , "adamaragaki@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-9458-0426"))
