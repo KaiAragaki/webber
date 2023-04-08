@@ -84,7 +84,8 @@ image
 
 ```{r echo=FALSE}
 library(magick)
-image <- system.file("extdata/wb.tif", package = "webber") |> image_read()
+image <- image_read("https://kai.rbind.io/wb.tif")
+image <- image |> image_convert("png")
 image
 ```
 
