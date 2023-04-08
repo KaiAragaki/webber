@@ -85,8 +85,7 @@ image
 ```{r echo=FALSE}
 library(magick)
 image <- image_read("https://kai.rbind.io/wb.tif")
-image <- image |> image_convert("png")
-image
+plot(image)
 ```
 
 The first part - the hardest part - is cropping it down to size. 
@@ -94,7 +93,8 @@ The first part - the hardest part - is cropping it down to size.
 `imagemagick` (henceforth `magick`) specifies that the TOP LEFT corner is (0, 0). So if I do this:
 
 ```{r}
-image_crop(image, "100x300")
+image_crop(image, "100x300") |>
+  plot()
 ```
 
 I get the upper left hand portion.
@@ -102,27 +102,29 @@ I get the upper left hand portion.
 If I wanted to offset where the area was (I still want it to be 100x300, say, but I want it closer to the bottom) I can specify an offset:
 
 ```{r}
-image_crop(image, "100x300+0+100")
+image_crop(image, "100x300+0+100") |>
+  plot()
 ```
 
 And if I want it closer to the middle:
 
 ```{r}
-image_crop(image, "100x300+100+0")
+image_crop(image, "100x300+100+0") |>
+  plot()
 ```
 
 So how do you make sure you crop the right portion? Unfortunately I don't have a perfect answer for you. You can do trial and error, or you can bring it into a photo editor and measure the dimensions and coordinates of your crop there. The things we do for reproducibility.
 
 ```{r}
 cropped <- image_crop(image, "370x100+90+200")
-cropped
+plot(cropped)
 ```
 
 Now it just so happens that this dose response is backward - higher concentrations on the left, lower on the right. I prefer it the other way.
 
 ```{r}
 flopped <- image_flop(cropped)
-flopped
+plot(flopped)
 ```
 
 Great - we're ready to annotate!
@@ -148,6 +150,7 @@ annot
 Then supply the `tibble` to `wb_annot_lanes`:
 
 ```{r}
-wb_annot_lanes(flopped, annot, n_lanes = 6, text_size = 4)
+wb <- wb_annot_lanes(flopped, annot, n_lanes = 6, text_size = 4)
+plot(wb)
 ```
 
