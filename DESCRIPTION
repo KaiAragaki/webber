@@ -24,6 +24,8 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
+Remotes:
+    McConkeyLab/bladdr
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 Depends: 
