@@ -18,6 +18,7 @@ Imports:
     cli,
     fs,
     glue,
+    magick,
     rlang,
     stringr
 Suggests: 

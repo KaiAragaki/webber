@@ -21,6 +21,8 @@ This package is a utility belt for working with Western blot images in R. It's p
 
 ```{r setup}
 library(webber)
+library(magick)
+library(tibble)
 ```
 
 # Getting set up with webber
@@ -77,13 +79,11 @@ file <- wb_get(
 With our file in hand, we can now edit it. For this, we call upon the delightful `magick` R package, which uses `imagemagick` under the hood.
 
 ```{r eval=FALSE}
-library(magick)
 image <- image_read(file)
 image
 ```
 
 ```{r echo=FALSE}
-library(magick)
 image <- image_read("https://kai.rbind.io/wb.tif")
 plot(image)
 ```
@@ -136,7 +136,6 @@ Now, back to webber.
 To annotate blot lanes with webber, you need to construct a `tibble` with one row per lane, and one column per line of annotation.
 
 ```{r}
-library(tibble)
 # Why a tibble and not a regular data.frame?
 # tibbles preserve spaces in their column names, which makes them display nicer.
 annot <- 
