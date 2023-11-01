@@ -4,7 +4,6 @@
 #' @export
 wb_setup <- function() {
   cli::cli_inform("Let's get you set up with webber!")
-  usethis::edit_r_profile()
   cli::cli_inform("Paste the following into the file that was just opened:")
   cli::cli_verbatim(
     "Sys.setenv(WEBBER_USR = \"XXXXXXXX\",
@@ -16,4 +15,5 @@ wb_setup <- function() {
   cli::cli_inform("You'll also want to make sure you're set up with Sharepoint.")
   cli::cli_inform("See here for more info:")
   cli::cli_text("{.url https://kai.quarto.pub/bok/analysis_setup.html#getting-r-to-talk-to-sharepoint}")
+  usethis::edit_r_profile()
 }
