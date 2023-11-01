@@ -26,8 +26,8 @@
 wb_list <- function(path, recursive = FALSE,
                     user = Sys.getenv("WEBBER_USR"),
                     wb_path = Sys.getenv("WEBBER_WBPATH")) {
-  check_if_user_is_empty(user)
-  check_if_wb_path_is_empty(wb_path)
+  check_if_arg_is_empty(arg = user, envar_name = "WEBBER_USR")
+  check_if_arg_is_empty(arg = wb_path, envar_name = "WEBBER_WBPATH")
   bladdr::list_gbci_dir(
     fs::path(wb_path, user, path),
     recursive = recursive

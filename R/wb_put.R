@@ -34,8 +34,8 @@ wb_put <- function(path,
                    wb_edit_path = Sys.getenv("WEBBER_WBEDITPATH"),
                    user = Sys.getenv("WEBBER_USR"),
                    drive = NULL) {
-  check_if_wb_edit_path_is_empty(wb_edit_path)
-  check_if_user_is_empty(user)
+  check_if_arg_is_empty(arg = wb_edit_path, envar_name = "WEBBER_WBEDITPATH")
+  check_if_arg_is_empty(arg = user, envar_name = "WEBBER_USR")
   check_if_wb_path_is_wb_edit_path(wb_edit_path = wb_edit_path)
 
   if (is.null(drive)) {

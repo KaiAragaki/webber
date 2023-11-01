@@ -30,6 +30,16 @@ check_if_wb_edit_path_is_empty <- function(wb_edit_path) {
   }
 }
 
+check_if_arg_is_empty <- function(arg, envar_name) {
+  if (arg == "") {
+    name <- deparse(substitute(arg))
+    cli::cli_abort(
+           c("Argument {.code {name}} is blank.",
+             i = "This may be because the environmental variable {.envvar {envar_name}} isn't set and the {.code {name}} argument wasn't supplied")
+         )
+  }
+}
+
 check_if_wb_path_is_wb_edit_path <- function(wb_path = NULL, wb_edit_path = NULL) {
   if (is.null(wb_path)) {
     wb_path <- Sys.getenv("WEBBER_WBPATH")

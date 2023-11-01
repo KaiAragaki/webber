@@ -36,8 +36,8 @@ wb_get <- function(path,
                    user = Sys.getenv("WEBBER_USR"),
                    wb_path = Sys.getenv("WEBBER_WBPATH"),
                    quiet = FALSE) {
-  check_if_user_is_empty(user)
-  check_if_wb_path_is_empty(wb_path)
+  check_if_arg_is_empty(arg = user, envar_name = "WEBBER_USR")
+  check_if_arg_is_empty(arg = wb_path, envar_name = "WEBBER_WBPATH")
 
   could_be_dir <- function(path) {
     fs::path_ext(path) == ""
@@ -58,7 +58,6 @@ wb_get <- function(path,
     no_file <- stringr::str_remove(dest, "[^/]*$")
     fs::dir_create(no_file)
   }
-
 
   e <- try(
     bladdr::get_gbci(
