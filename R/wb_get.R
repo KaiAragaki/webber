@@ -77,4 +77,3 @@ wb_get <- function(path,
   }
   dest
 }
-
