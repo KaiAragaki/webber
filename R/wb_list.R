@@ -23,7 +23,7 @@
 #'   wb_path = "Raw Data/ChemiDoc"
 #' )
 #' }
-wb_list <- function(path, recursive = FALSE,
+wb_list <- function(path = "", recursive = FALSE,
                     user = Sys.getenv("WEBBER_USR"),
                     wb_path = Sys.getenv("WEBBER_WBPATH")) {
   check_if_arg_is_empty(arg = user, envar_name = "WEBBER_USR")
