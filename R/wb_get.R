@@ -39,24 +39,25 @@ wb_get <- function(path,
   check_if_arg_is_empty(arg = user, envar_name = "WEBBER_USR")
   check_if_arg_is_empty(arg = wb_path, envar_name = "WEBBER_WBPATH")
 
-  could_be_dir <- function(path) {
+  is_dir <- function(path) {
     fs::path_ext(path) == ""
   }
 
-  if (could_be_dir(dest)) {
+  if (is_dir(dest))
     dest <- fs::path(dest)
-  }
 
-  if (file.exists(dest) & !could_be_dir(dest) & !overwrite) {
+  if (file.exists(dest) && !is_dir(dest) && !overwrite) {
     if (!quiet) {
-      cli::cli_inform("{dest} exists and overwrite = FALSE, returning local path to file")
+      cli::cli_inform(
+             "{dest} exists and overwrite = FALSE, returning local path to file"
+           )
     }
     return(dest)
   }
 
-  if (!could_be_dir(dest)) {
-    no_file <- stringr::str_remove(dest, "[^/]*$")
-    fs::dir_create(no_file)
+  if (!is_dir(dest)) {
+    dest_without_file <- stringr::str_remove(dest, "[^/]*$")
+    fs::dir_create(dest_without_file)
   }
 
   e <- try(
