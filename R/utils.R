@@ -55,11 +55,14 @@ check_if_wb_path_is_wb_edit_path <- function(wb_path = NULL, wb_edit_path = NULL
 }
 
 check_if_bfconvert_exists <- function() {
-  exists <- system2(
-    "command", c("-v", "bfconvert"),
-    stdout = FALSE,
-    stderr = FALSE
+  exists <- suppressWarnings(
+    system2(
+      "command", c("-v", "bfconvert"),
+      stdout = FALSE,
+      stderr = FALSE
+    )
   )
+
   if (!exists) {
     cli::cli_abort(
       c(
