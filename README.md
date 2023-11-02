@@ -4,10 +4,11 @@
 # webber
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 NOTE: THIS PACKAGE IS FOR PERSONAL USE AND WON’T WORK FOR YOU UNLESS YOU
-MODIFY IT, WHICH YOU ARE MORE THAN WELCOME TO DO! THAT’S FOSS BABY!
+MODIFY IT, WHICH YOU ARE MORE THAN WELCOME TO DO\! THAT’S FOSS BABY\!
 
 Webber is my assistant to help me manage and edit my blots and their
 metadata. It does this by providing a suite of tools to help edit and
@@ -21,8 +22,3 @@ You can install the development version of webber like so:
 ``` r
 # devtools::install_github("KaiAragaki/webber")
 ```
-
-## TODO
-
-- [ ] Create an assistant to help set up environmental variables
-  (WEBBER_WBPATH, WEBBER_USER)
