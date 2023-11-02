@@ -72,8 +72,9 @@ check_if_bfconvert_exists <- function() {
       stderr = FALSE
     )
   )
+  # Returns 0 if it exists
 
-  if (!exists) {
+  if (exists != 0) {
     cli::cli_abort(
       c(
         "Could not find bfconvert",
